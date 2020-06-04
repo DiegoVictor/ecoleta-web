@@ -54,6 +54,9 @@ const Register: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
+  const [validation_errors, setValidationErrors] = useState<ValidationErrors>(
+    {},
+  );
 
   const history = useHistory();
   const form_ref = useRef<FormHandles>(null);
@@ -118,24 +121,28 @@ const Register: React.FC = () => {
           .length(2, 'Digite apenas a UF do estado')
           .required('O estado é obrigatório'),
         city: Yup.string().required('A cidade é obrigatória'),
+        latitude: Yup.number().required('Escolha uma localização válida'),
+        longitude: Yup.number().required('Escolha uma localização válida'),
+        items: Yup.array().required('Escolha pelo menos uma categoria'),
       });
 
-      await schema.validate(point, { abortEarly: false });
+      await schema.validate(
+        { ...point, items: selected_items },
+        { abortEarly: false },
+      );
 
       await api.post('/points', point);
 
       history.push('/');
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
-        const validation_errors: ValidationErrors = {};
+        const errors: ValidationErrors = {};
 
         err.inner.forEach(error => {
-          validation_errors[error.path] = error.message;
+          errors[error.path] = error.message;
         });
 
-        if (form_ref.current) {
-          form_ref.current.setErrors(validation_errors);
-        }
+        setValidationErrors(errors);
       } else {
         toast.error(
           'Opa! Alguma coisa deu errado, tente novamente mais tarde!',
@@ -176,6 +183,12 @@ const Register: React.FC = () => {
       }
     })();
   }, []);
+
+  useEffect(() => {
+    if (form_ref.current) {
+      form_ref.current.setErrors(validation_errors);
+    }
+  }, [validation_errors]);
 
   return (
     <Layout>
@@ -233,6 +246,9 @@ const Register: React.FC = () => {
                 {position && <Marker position={position} />}
               </Map>
             </MapContainer>
+            {validation_errors.position && (
+              <span>{validation_errors.position}</span>
+            )}
 
             <FieldGroup>
               <Field>
@@ -278,6 +294,7 @@ const Register: React.FC = () => {
                 </Item>
               ))}
             </Items>
+            {validation_errors.items && <span>{validation_errors.items}</span>}
           </fieldset>
 
           <button type="submit">Cadastrar ponto de coleta</button>
