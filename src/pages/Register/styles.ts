@@ -107,6 +107,13 @@ export const Field = styled.div`
     }
   }
 
+  input + span,
+  select + span {
+    color: red;
+    display: block;
+    margin-top: 6px;
+  }
+
   select {
     -webkit-appearance: none;
     -moz-appearance: none;
