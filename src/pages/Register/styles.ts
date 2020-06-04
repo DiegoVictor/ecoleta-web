@@ -151,6 +151,12 @@ export const Items = styled.ul`
   gap: 16px;
   grid-template-columns: repeat(3, 1fr);
   list-style: none;
+
+  & + span {
+    color: red;
+    display: block;
+    margin-top: 10px;
+  }
 `;
 
 interface ItemProps {
@@ -190,7 +196,17 @@ export const MapContainer = styled.div`
   > div {
     border-radius: 8px;
     height: 350px;
-    margin-bottom: 24px;
+    margin-bottom: 5px;
     width: 100%;
+  }
+
+  & + span {
+    color: red;
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  & + ${FieldGroup} {
+    margin-top: 24px;
   }
 `;
