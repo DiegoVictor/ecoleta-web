@@ -130,7 +130,7 @@ const Register: React.FC = () => {
         const validation_errors: ValidationErrors = {};
 
         err.inner.forEach(error => {
-          // validation_errors[error.path] = error.message;
+          validation_errors[error.path] = error.message;
         });
 
         if (form_ref.current) {
