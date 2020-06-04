@@ -47,11 +47,7 @@ interface City {
 }
 
 interface ValidationErrors {
-  name?: string;
-  email?: string;
-  whatsapp?: string;
-  uf?: string;
-  city?: string;
+  [key: string]: any;
 }
 
 const Register: React.FC = () => {
