@@ -6,6 +6,7 @@ import { LeafletMouseEvent } from 'leaflet';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
+import Check from '../../assets/check.svg';
 import Logo from '../../assets/logo.svg';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
@@ -21,6 +22,7 @@ import {
   MapContainer,
   Items,
   Item,
+  Overlay,
 } from './styles';
 import Layout from '../../components/Layout';
 
@@ -57,6 +59,11 @@ const Register: React.FC = () => {
   const [validation_errors, setValidationErrors] = useState<ValidationErrors>(
     {},
   );
+  const [show_overlay, setShowOverlay] = useState(false);
+
+  setTimeout(() => {
+    setShowOverlay(true);
+  }, 1000);
 
   const history = useHistory();
   const form_ref = useRef<FormHandles>(null);
@@ -64,7 +71,7 @@ const Register: React.FC = () => {
   const [selected_items, setSelectedItems] = useState<number[]>([]);
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
-  const handleSelectUf = (event: ChangeEvent<HTMLSelectElement>) => {
+  const handleSelectedUf = (event: ChangeEvent<HTMLSelectElement>) => {
     const uf = event.target.value;
 
     if (uf.length > 0) {
@@ -97,7 +104,6 @@ const Register: React.FC = () => {
   const handleSubmit = async ({ name, email, whatsapp, uf, city }: Point) => {
     try {
       const [latitude, longitude] = position;
-      const items = selected_items.join(',');
       const point = {
         name,
         email,
@@ -106,7 +112,7 @@ const Register: React.FC = () => {
         city,
         latitude,
         longitude,
-        items,
+        items: selected_items,
       };
 
       const schema = Yup.object().shape({
@@ -126,14 +132,14 @@ const Register: React.FC = () => {
         items: Yup.array().required('Escolha pelo menos uma categoria'),
       });
 
-      await schema.validate(
-        { ...point, items: selected_items },
-        { abortEarly: false },
-      );
+      await schema.validate(point, { abortEarly: false });
 
       await api.post('/points', point);
 
-      history.push('/');
+      setShowOverlay(true);
+      setTimeout(() => {
+        history.push('/');
+      }, 2000);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const errors: ValidationErrors = {};
@@ -253,7 +259,7 @@ const Register: React.FC = () => {
             <FieldGroup>
               <Field>
                 <label htmlFor="uf">UF</label>
-                <Select name="uf" id="uf" onChange={handleSelectUf}>
+                <Select name="uf" id="uf" onChange={handleSelectedUf}>
                   <option value="">Selecione um estado</option>
                   {ufs.map(uf => (
                     <option key={uf} value={uf}>
@@ -300,6 +306,10 @@ const Register: React.FC = () => {
           <button type="submit">Cadastrar ponto de coleta</button>
         </Form>
       </Container>
+      <Overlay show={show_overlay}>
+        <img src={Check} alt="Success" />
+        <span>Cadastro concluído!</span>
+      </Overlay>
     </Layout>
   );
 };

@@ -210,3 +210,33 @@ export const MapContainer = styled.div`
     margin-top: 24px;
   }
 `;
+
+interface OverlayProps {
+  show: boolean;
+}
+
+export const Overlay = styled.div<OverlayProps>`
+  align-items: center;
+  background-color: rgba(14, 10, 20, 0.95);
+  color: #f0f0f5;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  font-size: 36px;
+  font-weight: bold;
+  height: 100%;
+  justify-content: center;
+  line-height: 42px;
+  opacity: ${props => (props.show ? 1 : 0)};
+  position: fixed;
+  pointer-events: ${props => (props.show ? 'all' : 'none')};
+  transition: all 0.25s;
+  top: 0px;
+  width: 100%;
+  z-index: 1000;
+
+  span {
+    display: block;
+    margin-top: 24px;
+  }
+`;
