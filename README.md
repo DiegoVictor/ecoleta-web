@@ -50,5 +50,5 @@ $ yarn start
 ```
 Or:
 ```
-npm run start
+$ npm run start
 ```
