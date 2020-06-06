@@ -6,12 +6,13 @@ import { LeafletMouseEvent } from 'leaflet';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
+import ibge from '../../services/ibge';
 import Check from '../../assets/check.svg';
 import Logo from '../../assets/logo.svg';
+import Dropzone from '../../components/Dropzone';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
 import { toast } from 'react-toastify';
-import ibge from '../../services/ibge';
 import { FormHandles } from '@unform/core';
 import {
   Container,
@@ -59,6 +60,7 @@ const Register: React.FC = () => {
   const [validation_errors, setValidationErrors] = useState<ValidationErrors>(
     {},
   );
+  const [selected_file, setSelectedFile] = useState<File>();
   const [show_overlay, setShowOverlay] = useState(false);
 
   const history = useHistory();
@@ -109,6 +111,7 @@ const Register: React.FC = () => {
         latitude,
         longitude,
         items: selected_items,
+        image: selected_file,
       };
 
       const schema = Yup.object().shape({
@@ -126,11 +129,29 @@ const Register: React.FC = () => {
         latitude: Yup.number().required('Escolha uma localização válida'),
         longitude: Yup.number().required('Escolha uma localização válida'),
         items: Yup.array().required('Escolha pelo menos uma categoria'),
+        image: Yup.mixed().required(
+          'Escolha uma imagem para o estabelecimento',
+        ),
       });
 
       await schema.validate(point, { abortEarly: false });
 
-      await api.post('/points', point);
+      const data = new FormData();
+
+      data.append('name', name);
+      data.append('email', email);
+      data.append('whatsapp', whatsapp);
+      data.append('uf', uf);
+      data.append('city', city);
+      data.append('latitude', String(latitude));
+      data.append('longitude', String(longitude));
+      data.append('items', selected_items.join(','));
+
+      if (selected_file) {
+        data.append('image', selected_file);
+      }
+
+      await api.post('/points', data);
 
       setShowOverlay(true);
       setTimeout(() => {
@@ -209,6 +230,9 @@ const Register: React.FC = () => {
             Cadastro do
             <br /> ponto de coleta
           </h1>
+
+          <Dropzone onFileSelected={setSelectedFile} />
+          {validation_errors.image && <span>{validation_errors.image}</span>}
 
           <fieldset>
             <legend>
