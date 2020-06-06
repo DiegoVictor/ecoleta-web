@@ -61,10 +61,6 @@ const Register: React.FC = () => {
   );
   const [show_overlay, setShowOverlay] = useState(false);
 
-  setTimeout(() => {
-    setShowOverlay(true);
-  }, 1000);
-
   const history = useHistory();
   const form_ref = useRef<FormHandles>(null);
 
