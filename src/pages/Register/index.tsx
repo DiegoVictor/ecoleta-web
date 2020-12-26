@@ -75,8 +75,9 @@ const Register: React.FC = () => {
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
   const handleSelectedUf = useCallback(
+    (event: ChangeEvent<HTMLSelectElement>) => {
+      const uf = event.target.value;
 
-    if (uf.length > 0) {
       (async () => {
         try {
           const { data } = await ibge.get<City[]>(`/estados/${uf}/municipios`);
