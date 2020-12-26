@@ -9,7 +9,9 @@ import { FiArrowLeft } from 'react-icons/fi';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import { useHistory } from 'react-router-dom';
 import { LeafletMouseEvent } from 'leaflet';
+import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { FormHandles } from '@unform/core';
 
 import api from '../../services/api';
 import ibge from '../../services/ibge';
@@ -18,8 +20,6 @@ import Logo from '../../assets/logo.svg';
 import Dropzone from '../../components/Dropzone';
 import Input from '../../components/Input';
 import Select from '../../components/Select';
-import { toast } from 'react-toastify';
-import { FormHandles } from '@unform/core';
 import {
   Container,
   Link,
@@ -31,7 +31,6 @@ import {
   Item,
   Overlay,
 } from './styles';
-import Layout from '../../components/Layout';
 
 interface Point {
   name: string;
