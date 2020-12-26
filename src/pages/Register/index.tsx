@@ -195,6 +195,7 @@ const Register: React.FC = () => {
     (async () => {
       try {
         const { data } = await ibge.get<UF[]>('/estados');
+
         setUfs(data.map(uf => uf.sigla).sort());
       } catch (err) {
         toast.error(
@@ -204,14 +205,8 @@ const Register: React.FC = () => {
     })();
   }, []);
 
-  useEffect(() => {
-    if (form_ref.current) {
-      form_ref.current.setErrors(validation_errors);
-    }
-  }, [validation_errors]);
-
   return (
-    <Layout>
+    <>
       <Container>
         <header>
           <img src={Logo} alt="Ecoleta" />
@@ -337,7 +332,7 @@ const Register: React.FC = () => {
         <img src={Check} alt="Success" />
         <span>Cadastro concluído!</span>
       </Overlay>
-    </Layout>
+    </>
   );
 };
 
