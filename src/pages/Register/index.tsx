@@ -216,7 +216,7 @@ const Register: React.FC = () => {
         <header>
           <img src={Logo} alt="Ecoleta" />
 
-          <Link to="/">
+          <Link to="/" data-testid="home">
             <FiArrowLeft />
             Voltar para Home
           </Link>
@@ -276,8 +276,15 @@ const Register: React.FC = () => {
             <FieldGroup>
               <Field>
                 <label htmlFor="uf">UF</label>
-                <Select name="uf" id="uf" onChange={handleSelectedUf}>
-                  <option value="">Selecione um estado</option>
+                <Select
+                  name="uf"
+                  id="uf"
+                  onChange={handleSelectedUf}
+                  data-testid="state"
+                >
+                  <option value="" disabled>
+                    Selecione um estado
+                  </option>
                   {ufs.map(uf => (
                     <option key={uf} value={uf}>
                       {uf}
@@ -287,7 +294,7 @@ const Register: React.FC = () => {
               </Field>
               <Field>
                 <label htmlFor="city">Cidade</label>
-                <Select name="city" id="city">
+                <Select name="city" id="city" data-testid="city">
                   <option value="">Selecione uma cidade</option>
                   {cities.map(city => (
                     <option key={city} value={city}>
@@ -311,6 +318,7 @@ const Register: React.FC = () => {
                   key={item.id.toString()}
                   onClick={() => handleSelectItem(item.id)}
                   selected={selectedItems.includes(item.id)}
+                  data-testid={`item_${item.id}`}
                 >
                   <img src={item.image_url} alt={item.title} />
                   <span>{item.title}</span>
@@ -320,10 +328,12 @@ const Register: React.FC = () => {
             {validationErrors.items && <span>{validationErrors.items}</span>}
           </fieldset>
 
-          <button type="submit">Cadastrar ponto de coleta</button>
+          <button type="submit" data-testid="submit">
+            Cadastrar ponto de coleta
+          </button>
         </Form>
       </Container>
-      <Overlay show={show_overlay}>
+      <Overlay data-testid="overlay" show={showOverlay}>
         <img src={Check} alt="Success" />
         <span>Cadastro concluído!</span>
       </Overlay>
