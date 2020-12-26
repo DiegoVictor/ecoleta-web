@@ -9,18 +9,18 @@ interface DropzoneProps {
 }
 
 const Dropzone: React.FC<DropzoneProps> = ({ onFileSelected }) => {
-  const [selected_file_url, setSelectedFileUrl] = useState('');
+  const [selectedFileUrl, setSelectedFileUrl] = useState('');
 
   const onDrop = useCallback(
     accepted_files => {
       const file = accepted_files[0];
-      const file_url = URL.createObjectURL(file);
 
-      setSelectedFileUrl(file_url);
+      setSelectedFileUrl(URL.createObjectURL(file));
       onFileSelected(file);
     },
     [onFileSelected],
   );
+
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
     accept: 'image/*',
@@ -29,8 +29,8 @@ const Dropzone: React.FC<DropzoneProps> = ({ onFileSelected }) => {
   return (
     <Container {...getRootProps()}>
       <input {...getInputProps()} accept="image/*" />
-      {selected_file_url ? (
-        <img src={selected_file_url} alt="Preview" />
+      {selectedFileUrl ? (
+        <img src={selectedFileUrl} alt="Preview" />
       ) : (
         <p>
           <FiUpload />
