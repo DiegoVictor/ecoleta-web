@@ -63,16 +63,16 @@ const Register: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
-  const [validation_errors, setValidationErrors] = useState<ValidationErrors>(
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
     {},
   );
-  const [selected_file, setSelectedFile] = useState<File>();
-  const [show_overlay, setShowOverlay] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File>();
+  const [showOverlay, setShowOverlay] = useState(false);
 
   const history = useHistory();
-  const form_ref = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null);
 
-  const [selected_items, setSelectedItems] = useState<number[]>([]);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
   const handleSelectedUf = useCallback(
@@ -98,6 +98,12 @@ const Register: React.FC = () => {
 
   const handleSelectItem = useCallback(
     (id: number) => {
+      if (selectedItems.includes(id)) {
+        const filteredItems = selectedItems.filter(item => item !== id);
+        setSelectedItems(filteredItems);
+      } else {
+        setSelectedItems([...selectedItems, id]);
+      }
     },
     [selectedItems, setSelectedItems],
   );
@@ -136,11 +142,9 @@ const Register: React.FC = () => {
       data.append('city', city);
       data.append('latitude', String(latitude));
       data.append('longitude', String(longitude));
-      data.append('items', selected_items.join(','));
+        data.append('items', selectedItems.join(','));
 
-      if (selected_file) {
-        data.append('image', selected_file);
-      }
+        data.append('image', selectedFile);
 
       await api.post('/points', data);
 
@@ -218,14 +222,14 @@ const Register: React.FC = () => {
           </Link>
         </header>
 
-        <Form ref={form_ref} onSubmit={handleSubmit}>
+        <Form ref={formRef} onSubmit={handleSubmit}>
           <h1>
             Cadastro do
             <br /> ponto de coleta
           </h1>
 
           <Dropzone onFileSelected={setSelectedFile} />
-          {validation_errors.image && <span>{validation_errors.image}</span>}
+          {validationErrors.image && <span>{validationErrors.image}</span>}
 
           <fieldset>
             <legend>
@@ -265,8 +269,8 @@ const Register: React.FC = () => {
                 {position && <Marker position={position} />}
               </Map>
             </MapContainer>
-            {validation_errors.position && (
-              <span>{validation_errors.position}</span>
+            {(validationErrors.latitude || validationErrors.longitude) && (
+              <span>Escolha uma localização válida</span>
             )}
 
             <FieldGroup>
@@ -306,14 +310,14 @@ const Register: React.FC = () => {
                 <Item
                   key={item.id.toString()}
                   onClick={() => handleSelectItem(item.id)}
-                  selected={selected_items.includes(item.id)}
+                  selected={selectedItems.includes(item.id)}
                 >
                   <img src={item.image_url} alt={item.title} />
                   <span>{item.title}</span>
                 </Item>
               ))}
             </Items>
-            {validation_errors.items && <span>{validation_errors.items}</span>}
+            {validationErrors.items && <span>{validationErrors.items}</span>}
           </fieldset>
 
           <button type="submit">Cadastrar ponto de coleta</button>
