@@ -1,4 +1,10 @@
-import React, { useEffect, useState, ChangeEvent, useRef } from 'react';
+import React, {
+  useEffect,
+  useState,
+  ChangeEvent,
+  useRef,
+  useCallback,
+} from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Map, TileLayer, Marker } from 'react-leaflet';
 import { useHistory } from 'react-router-dom';
@@ -69,8 +75,7 @@ const Register: React.FC = () => {
   const [selected_items, setSelectedItems] = useState<number[]>([]);
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
-  const handleSelectedUf = (event: ChangeEvent<HTMLSelectElement>) => {
-    const uf = event.target.value;
+  const handleSelectedUf = useCallback(
 
     if (uf.length > 0) {
       (async () => {
@@ -83,36 +88,22 @@ const Register: React.FC = () => {
           );
         }
       })();
-    }
-  };
+    },
+    [],
+  );
 
-  const handleMapClick = (event: LeafletMouseEvent) => {
+  const handleMapClick = useCallback((event: LeafletMouseEvent) => {
     setPosition([event.latlng.lat, event.latlng.lng]);
-  };
+  }, []);
 
-  const handleSelectItem = (id: number) => {
-    if (selected_items.includes(id)) {
-      const filtered_items = selected_items.filter(item => item !== id);
-      setSelectedItems(filtered_items);
-    } else {
-      setSelectedItems([...selected_items, id]);
-    }
-  };
+  const handleSelectItem = useCallback(
+    (id: number) => {
+    },
+    [selectedItems, setSelectedItems],
+  );
 
-  const handleSubmit = async ({ name, email, whatsapp, uf, city }: Point) => {
-    try {
-      const [latitude, longitude] = position;
-      const point = {
-        name,
-        email,
-        whatsapp,
-        uf,
-        city,
-        latitude,
-        longitude,
-        items: selected_items,
-        image: selected_file,
-      };
+  const handleSubmit = useCallback(
+    async ({ name, email, whatsapp, uf, city }: Point) => {
 
       const schema = Yup.object().shape({
         name: Yup.string()
@@ -172,7 +163,9 @@ const Register: React.FC = () => {
         );
       }
     }
-  };
+    },
+    [position, selectedItems, selectedFile],
+  );
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
