@@ -24,6 +24,7 @@ This web version allow entities to register yourself and select the types of ite
 Click to expand.<br>
 ![home](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/master/screenshots/home.png)
 ![register](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/master/screenshots/register.png)
+![success](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/master/screenshots/success.png)
 
 # Installing
 Easy peasy lemon squeezy:
