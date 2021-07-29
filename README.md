@@ -1,5 +1,6 @@
 # [Web] Ecoleta
 ![CircleCI](https://img.shields.io/circleci/build/github/DiegoVictor/ecoleta-web?style=flat-square&logo=circleci)
+[![typescript](https://img.shields.io/badge/typescript-4.1.3-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![reactjs](https://img.shields.io/badge/reactjs-16.13.1-61dafb?style=flat-square&logo=react)](https://reactjs.org/)
 [![styled-components](https://img.shields.io/badge/styled_components-5.1.1-db7b86?style=flat-square&logo=styled-components)](https://styled-components.com/)
 [![eslint](https://img.shields.io/badge/eslint-6.8.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
