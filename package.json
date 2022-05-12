@@ -22,7 +22,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "jest --runInBand",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
