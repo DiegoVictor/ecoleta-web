@@ -2,7 +2,7 @@ import React from 'react';
 import { act, fireEvent, render, wait } from '@testing-library/react';
 import { MemoryRouter, Router } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
-import faker from 'faker';
+import faker from '@faker-js/faker';
 import MockAdapter from 'axios-mock-adapter';
 import { toast } from 'react-toastify';
 
@@ -194,7 +194,7 @@ describe('Register page', () => {
     const uf = faker.address.stateAbbr();
     const city = faker.address.city();
     const item = {
-      id: faker.random.number(),
+      id: faker.datatype.number(),
       title: faker.random.word(),
       image_url: faker.image.imageUrl(),
     };
@@ -285,7 +285,7 @@ describe('Register page', () => {
     const uf = faker.address.stateAbbr();
     const city = faker.address.city();
     const item = {
-      id: faker.random.number(),
+      id: faker.datatype.number(),
       title: faker.random.word(),
       image_url: faker.image.imageUrl(),
     };
@@ -376,7 +376,7 @@ describe('Register page', () => {
     const uf = faker.address.stateAbbr();
     const city = faker.address.city();
     const item = {
-      id: faker.random.number(),
+      id: faker.datatype.number(),
       title: faker.random.word(),
       image_url: faker.image.imageUrl(),
     };
