@@ -7,7 +7,7 @@
 [![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
 [![jest](https://img.shields.io/badge/jest-26.6.3-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/ecoleta-web?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/ecoleta-web)
-[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/DiegoVictor/ecoleta-web/blob/master/LICENSE)
+[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://github.com/DiegoVictor/ecoleta-web/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
 This web version allow entities to register yourself and select the types of items that its point collect. All the resources used by this application comes from its [`API`](https://github.com/DiegoVictor/ecoleta-api).
 
@@ -23,9 +23,9 @@ This web version allow entities to register yourself and select the types of ite
 
 # Screenshots
 Click to expand.<br>
-![home](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/master/screenshots/home.png)
-![register](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/master/screenshots/register.png)
-![success](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/master/screenshots/success.png)
+![home](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/main/screenshots/home.png)
+![register](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/main/screenshots/register.png)
+![success](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/main/screenshots/success.png)
 
 # Installing
 Easy peasy lemon squeezy:
