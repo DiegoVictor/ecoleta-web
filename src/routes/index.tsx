@@ -1,16 +1,16 @@
 import React from 'react';
-import { Route, BrowserRouter } from 'react-router';
+import { Route, Routes, BrowserRouter } from 'react-router';
 
 import Home from '../pages/Home';
 import Register from '../pages/Register';
 
-const Routes: React.FC = () => {
+export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
-      <Route component={Home} path="/" exact />
-      <Route component={Register} path="/register" />
+      <Routes>
+        <Route element={<Home />} index />
+        <Route element={<Register />} path="/register" />
+      </Routes>
     </BrowserRouter>
   );
 };
-
-export default Routes;

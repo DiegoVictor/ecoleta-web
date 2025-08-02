@@ -1,7 +1,7 @@
 import React from 'react';
 import { ToastContainer } from 'react-toastify';
 
-import Routes from './routes';
+import { AppRoutes } from './routes';
 import Theme from './styles/theme';
 
 const App: React.FC = () => {
@@ -9,7 +9,7 @@ const App: React.FC = () => {
     <>
       <Theme />
       <ToastContainer />
-      <Routes />
+      <AppRoutes />
     </>
   );
 };
