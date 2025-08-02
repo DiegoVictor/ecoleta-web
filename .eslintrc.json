@@ -5,10 +5,8 @@
     "jest": true
   },
   "extends": [
-    "plugin:react/recommended",
-    "plugin:@typescript/recommended",
+    "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
   "globals": {
