@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { Form as Unform } from '@unform/web';
 
 export const Container = styled.div`
