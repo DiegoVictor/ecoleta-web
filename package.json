@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@unform/core": "^2.1.0",
-    "@unform/web": "^2.1.0",
     "axios": "^1.11.0",
     "leaflet": "^1.9.4",
     "react": "^19.1.1",
