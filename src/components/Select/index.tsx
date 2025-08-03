@@ -1,32 +1,24 @@
-import React, { useEffect, useRef, ChangeEvent } from 'react';
-import { useField } from '@unform/core';
+import React, { ChangeEvent, PropsWithChildren } from 'react';
 
-interface SelectProps {
+interface SelectProps extends PropsWithChildren {
   name: string;
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void;
   id?: string;
+  error?: string;
 }
 
-const Select: React.FC<SelectProps> = ({ name, children, ...rest }) => {
-  const inputRef = useRef(null);
-  const { fieldName, defaultValue, registerField, error } = useField(name);
-
-  useEffect(() => {
-    registerField({
-      name: fieldName,
-      ref: inputRef.current,
-      path: 'value',
-    });
-  }, [fieldName, registerField]);
-
+export const Select: React.FC<SelectProps> = ({
+  name,
+  children,
+  error,
+  ...rest
+}) => {
   return (
     <>
-      <select ref={inputRef} defaultValue={defaultValue} {...rest}>
+      <select name={name} {...rest}>
         {children}
       </select>
       {error && <span>{error}</span>}
     </>
   );
 };
-
-export default Select;
