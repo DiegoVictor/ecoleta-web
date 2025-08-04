@@ -14,7 +14,7 @@
     "react-scripts": "5.0.1",
     "react-toastify": "^11.0.5",
     "styled-components": "^6.1.19",
-    "yup": "^1.6.1"
+    "yup": "^1.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -52,14 +52,15 @@
     "@types/yup": "^0.29.2",
     "@typescript-eslint/eslint-plugin": "^8.38.0",
     "@typescript-eslint/parser": "^8.38.0",
-    "axios-mock-adapter": "^1.19.0",
+    "axios-mock-adapter": "^2.1.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
+    "eslint-plugin-react": "^7.37.5",
     "jest": "^30.0.5",
     "jest-transform-stub": "^2.0.0",
     "prettier": "^3.6.2",
-    "ts-jest": "^29.4.0",
+    "ts-jest": "^29.4.1",
     "typescript": "^5.9.2"
   },
   "overrides": {
