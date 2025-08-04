@@ -1,14 +1,14 @@
 # [Web] Ecoleta
 [![CircleCI](https://img.shields.io/circleci/build/github/DiegoVictor/ecoleta-web?style=flat-square&logo=circleci)](https://app.circleci.com/pipelines/github/DiegoVictor/ecoleta-web?branch=main)
-[![typescript](https://img.shields.io/badge/typescript-4.1.3-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+[![typescript](https://img.shields.io/badge/typescript-5.9.2-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
 [![reactjs](https://img.shields.io/badge/reactjs-16.13.1-61dafb?style=flat-square&logo=react)](https://reactjs.org/)
-[![styled-components](https://img.shields.io/badge/styled_components-5.1.1-db7b86?style=flat-square&logo=styled-components)](https://styled-components.com/)
-[![eslint](https://img.shields.io/badge/eslint-6.8.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
-[![airbnb-style](https://flat.badgen.net/badge/style-guide/airbnb/ff5a5f?icon=airbnb)](https://github.com/airbnb/javascript)
-[![jest](https://img.shields.io/badge/jest-26.6.3-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
+[![styled-components](https://img.shields.io/badge/styled_components-6.1.9-db7b86?style=flat-square&logo=styled-components)](https://styled-components.com/)
+[![eslint](https://img.shields.io/badge/eslint-9.32.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
+[![jest](https://img.shields.io/badge/jest-30.0.5-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/ecoleta-web?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/ecoleta-web)
 [![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/main/LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)<br>
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+
 This web version allow entities to register yourself and select the types of items that its point collect. All the resources used by this application comes from its [`API`](https://github.com/DiegoVictor/ecoleta-api).
 
 ## Table of Contents
