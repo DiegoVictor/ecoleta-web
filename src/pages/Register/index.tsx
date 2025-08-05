@@ -2,8 +2,8 @@ import React, {
   useEffect,
   useState,
   ChangeEvent,
-  useRef,
   useCallback,
+  FormEvent,
 } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
 import {
@@ -14,7 +14,6 @@ import {
 } from 'react-leaflet';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
-import { FormHandles } from '@unform/core';
 
 import api from '../../services/api';
 import ibge from '../../services/ibge';
@@ -80,8 +79,6 @@ const Register: React.FC = () => {
   const [showOverlay, setShowOverlay] = useState(false);
 
   const history = useHistory();
-  const formRef = useRef<FormHandles>(null);
-
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
@@ -239,7 +236,7 @@ const Register: React.FC = () => {
           </Link>
         </header>
 
-        <Form ref={formRef} onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           <h1>
             Cadastro do
             <br /> ponto de coleta
