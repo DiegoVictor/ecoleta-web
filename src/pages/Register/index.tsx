@@ -12,6 +12,7 @@ import {
   Marker,
   useMapEvent,
 } from 'react-leaflet';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 
@@ -77,8 +78,7 @@ const Register: React.FC = () => {
   );
   const [selectedFile, setSelectedFile] = useState<File>();
   const [showOverlay, setShowOverlay] = useState(false);
-
-  const history = useHistory();
+  const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [position, setPosition] = useState<[number, number]>([0, 0]);
 
