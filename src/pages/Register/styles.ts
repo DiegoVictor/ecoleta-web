@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
 import { Link as RouterLink } from 'react-router';
-import { Form as Unform } from '@unform/web';
 
 export const Container = styled.div`
   margin: 0px auto;
@@ -28,7 +27,7 @@ export const Link = styled(RouterLink)`
   }
 `;
 
-export const Form = styled(Unform)`
+export const Form = styled.form`
   background: #fff;
   border-radius: 8px;
   display: flex;
