@@ -6,9 +6,12 @@ import React, {
   useCallback,
 } from 'react';
 import { FiArrowLeft } from 'react-icons/fi';
-import { Map, TileLayer, Marker } from 'react-leaflet';
-import { useHistory } from 'react-router-dom';
-import { LeafletMouseEvent } from 'leaflet';
+import {
+  MapContainer as Map,
+  TileLayer,
+  Marker,
+  useMapEvent,
+} from 'react-leaflet';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
 import { FormHandles } from '@unform/core';
@@ -58,6 +61,14 @@ interface ValidationErrors {
   [key: string]: any;
 }
 
+const MapCenterOnClick = () => {
+  const map = useMapEvent('click', event => {
+    map.setView([event.latlng.lat, event.latlng.lng]);
+  });
+
+  return null;
+};
+
 const Register: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
@@ -91,10 +102,6 @@ const Register: React.FC = () => {
     },
     [],
   );
-
-  const handleMapClick = useCallback((event: LeafletMouseEvent) => {
-    setPosition([event.latlng.lat, event.latlng.lng]);
-  }, []);
 
   const handleSelectItem = useCallback(
     (id: number) => {
@@ -270,11 +277,12 @@ const Register: React.FC = () => {
             </legend>
 
             <MapContainer>
-              <Map center={position} zoom={15} onClick={handleMapClick}>
+              <Map center={position} zoom={15}>
                 <TileLayer
                   attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
+                <MapCenterOnClick />
 
                 {position && <Marker position={position} />}
               </Map>
