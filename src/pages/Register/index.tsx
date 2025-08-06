@@ -180,7 +180,21 @@ const Register: React.FC = () => {
         navigate('/');
       }, 2000);
     } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors: Record<string, string> = {};
+        err.inner.forEach(error => {
+          if (error.path) {
+            validationErrors[error.path] = error.message;
+          }
+        });
 
+        setErrors(validationErrors);
+      } else {
+        toast.error(
+          'Opa! Alguma coisa deu errado, tente novamente mais tarde!',
+        );
+      }
+    }
   };
 
   useEffect(() => {
@@ -236,7 +250,7 @@ const Register: React.FC = () => {
           </h1>
 
           <Dropzone onFileSelected={setSelectedFile} />
-          {validationErrors.image && <span>{validationErrors.image}</span>}
+          {errors.image && <span>{errors.image}</span>}
 
           <fieldset>
             <legend>
@@ -287,7 +301,7 @@ const Register: React.FC = () => {
                 {position && <Marker position={position} />}
               </Map>
             </MapContainer>
-            {(validationErrors.latitude || validationErrors.longitude) && (
+            {(errors.latitude || errors.longitude) && (
               <span>Escolha uma localização válida</span>
             )}
 
@@ -349,7 +363,7 @@ const Register: React.FC = () => {
                 </Item>
               ))}
             </Items>
-            {validationErrors.items && <span>{validationErrors.items}</span>}
+            {errors.items && <span>{errors.items}</span>}
           </fieldset>
 
           <button type="submit" data-testid="submit">
