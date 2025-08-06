@@ -81,6 +81,7 @@ const Register: React.FC = () => {
   const navigate = useNavigate();
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [position, setPosition] = useState<[number, number]>([0, 0]);
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleSelectedUf = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
@@ -252,17 +253,27 @@ const Register: React.FC = () => {
 
             <Field>
               <label htmlFor="name">Nome da entidade</label>
-              <Input type="text" name="name" id="name" />
+              <Input type="text" name="name" id="name" error={errors.name} />
             </Field>
 
             <FieldGroup>
               <Field>
                 <label htmlFor="email">Email</label>
-                <Input type="email" name="email" id="email" />
+                <Input
+                  type="email"
+                  name="email"
+                  id="email"
+                  error={errors.email}
+                />
               </Field>
               <Field>
                 <label htmlFor="whatsapp">WhatsApp</label>
-                <Input type="text" name="whatsapp" id="whatsapp" />
+                <Input
+                  type="text"
+                  name="whatsapp"
+                  id="whatsapp"
+                  error={errors.whatsapp}
+                />
               </Field>
             </FieldGroup>
           </fieldset>
@@ -296,6 +307,7 @@ const Register: React.FC = () => {
                   id="uf"
                   onChange={handleSelectedUf}
                   data-testid="state"
+                  error={errors.uf}
                 >
                   <option value="" disabled>
                     Selecione um estado
@@ -309,7 +321,12 @@ const Register: React.FC = () => {
               </Field>
               <Field>
                 <label htmlFor="city">Cidade</label>
-                <Select name="city" id="city" data-testid="city">
+                <Select
+                  name="city"
+                  id="city"
+                  data-testid="city"
+                  error={errors.city}
+                >
                   <option value="">Selecione uma cidade</option>
                   {cities.map(city => (
                     <option key={city} value={city}>
