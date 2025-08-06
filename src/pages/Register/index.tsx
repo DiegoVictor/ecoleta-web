@@ -21,8 +21,8 @@ import ibge from '../../services/ibge';
 import Check from '../../assets/check.svg';
 import Logo from '../../assets/logo.svg';
 import Dropzone from '../../components/Dropzone';
-import Input from '../../components/Input';
-import Select from '../../components/Select';
+import { Input } from '../../components/Input';
+import { Select } from '../../components/Select';
 import {
   Container,
   Link,
@@ -34,14 +34,6 @@ import {
   Item,
   Overlay,
 } from './styles';
-
-interface Point {
-  name: string;
-  email: string;
-  whatsapp: string;
-  uf: string;
-  city: string;
-}
 
 interface Item {
   id: number;
@@ -57,10 +49,6 @@ interface City {
   nome: string;
 }
 
-interface ValidationErrors {
-  [key: string]: any;
-}
-
 const MapCenterOnClick = () => {
   const map = useMapEvent('click', event => {
     map.setView([event.latlng.lat, event.latlng.lng]);
@@ -73,9 +61,6 @@ const Register: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
-  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
-    {},
-  );
   const [selectedFile, setSelectedFile] = useState<File>();
   const [showOverlay, setShowOverlay] = useState(false);
   const navigate = useNavigate();
