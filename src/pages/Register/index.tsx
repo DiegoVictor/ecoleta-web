@@ -136,55 +136,50 @@ const Register: React.FC = () => {
         image: selectedFile,
       };
 
-        const schema = Yup.object().shape({
-          name: Yup.string()
-            .min(3, 'Digite pelo menos 3 caracteres')
-            .required('O nome da entidade é obrigatório'),
-          email: Yup.string()
-            .email('Digite um email válido')
-            .required('O email é obrigatório'),
-          whatsapp: Yup.string().required('O WhatsApp é obrigatório'),
-          uf: Yup.string()
-            .length(2, 'Digite apenas a UF do estado')
-            .required('O estado é obrigatório'),
-          city: Yup.string().required('A cidade é obrigatória'),
-          latitude: Yup.number().notOneOf([0]).required(),
-          longitude: Yup.number().notOneOf([0]).required(),
-          items: Yup.array().required('Escolha pelo menos uma categoria'),
-          image: Yup.mixed().required(
-            'Escolha uma imagem para o estabelecimento',
-          ),
-        });
+      const schema = Yup.object().shape({
+        name: Yup.string()
+          .min(3, 'Digite pelo menos 3 caracteres')
+          .required('O nome da entidade é obrigatório'),
+        email: Yup.string()
+          .email('Digite um email válido')
+          .required('O email é obrigatório'),
+        whatsapp: Yup.string().required('O WhatsApp é obrigatório'),
+        uf: Yup.string()
+          .length(2, 'Digite apenas a UF do estado')
+          .required('O estado é obrigatório'),
+        city: Yup.string().required('A cidade é obrigatória'),
+        latitude: Yup.number().notOneOf([0]).required(),
+        longitude: Yup.number().notOneOf([0]).required(),
+        items: Yup.array().required('Escolha pelo menos uma categoria'),
+        image: Yup.mixed().required(
+          'Escolha uma imagem para o estabelecimento',
+        ),
+      });
 
-        await schema.validate(point, { abortEarly: false });
+      await schema.validate(point, { abortEarly: false });
 
-        const data = new FormData();
+      const data = new FormData();
 
-        data.append('name', name);
-        data.append('email', email);
-        data.append('whatsapp', whatsapp);
-        data.append('uf', uf);
-        data.append('city', city);
-        data.append('latitude', String(latitude));
-        data.append('longitude', String(longitude));
-        data.append('items', selectedItems.join(','));
+      data.append('name', name);
+      data.append('email', email);
+      data.append('whatsapp', whatsapp);
+      data.append('uf', uf);
+      data.append('city', city);
+      data.append('latitude', String(latitude));
+      data.append('longitude', String(longitude));
+      data.append('items', selectedItems.join(','));
 
-        // @ts-ignore: Validation will prevent that this file not exists
+      if (selectedFile) {
         data.append('image', selectedFile);
+      }
 
-        await api.post('/points', data);
+      await api.post('/points', data);
 
-        setShowOverlay(true);
-        setTimeout(() => {
-          history.push('/');
-        }, 2000);
-      } catch (err) {
-        if (err instanceof Yup.ValidationError) {
-          const errors: ValidationErrors = {};
-
-          err.inner.forEach(error => {
-            errors[error.path] = error.message;
-          });
+      setShowOverlay(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    } catch (err) {
 
   };
 
