@@ -113,21 +113,28 @@ const Register: React.FC = () => {
     [selectedItems, setSelectedItems],
   );
 
-  const handleSubmit = useCallback(
-    async ({ name, email, whatsapp, uf, city }: Point) => {
-      try {
-        const [latitude, longitude] = position;
-        const point = {
-          name,
-          email,
-          whatsapp,
-          uf,
-          city,
-          latitude,
-          longitude,
-          items: selectedItems,
-          image: selectedFile,
-        };
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setErrors({});
+
+    try {
+      const formData = new FormData(event.target as HTMLFormElement);
+      const { name, email, whatsapp, uf, city } = Object.fromEntries(
+        formData.entries(),
+      );
+
+      const [latitude, longitude] = position;
+      const point = {
+        name,
+        email,
+        whatsapp,
+        uf,
+        city,
+        latitude,
+        longitude,
+        items: selectedItems,
+        image: selectedFile,
+      };
 
         const schema = Yup.object().shape({
           name: Yup.string()
@@ -179,17 +186,7 @@ const Register: React.FC = () => {
             errors[error.path] = error.message;
           });
 
-          setValidationErrors(errors);
-          formRef.current?.setErrors(errors);
-        } else {
-          toast.error(
-            'Opa! Alguma coisa deu errado, tente novamente mais tarde!',
-          );
-        }
-      }
-    },
-    [position, selectedItems, selectedFile],
-  );
+  };
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(position => {
