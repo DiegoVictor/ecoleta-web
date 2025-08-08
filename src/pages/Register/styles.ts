@@ -175,7 +175,7 @@ export const Item = styled.li<ItemProps>`
   padding: 32px 24px 16px;
   text-align: center;
 
-  ${props =>
+  ${(props: ItemProps) =>
     props.selected &&
     css`
       background: #e1faec;
@@ -211,7 +211,7 @@ export const MapContainer = styled.div`
 `;
 
 interface OverlayProps {
-  show: boolean;
+  $show?: boolean;
 }
 
 export const Overlay = styled.div<OverlayProps>`
@@ -226,9 +226,9 @@ export const Overlay = styled.div<OverlayProps>`
   height: 100%;
   justify-content: center;
   line-height: 42px;
-  opacity: ${props => (props.show ? 1 : 0)};
+  opacity: ${(props: OverlayProps) => (props.$show ? 1 : 0)};
   position: fixed;
-  pointer-events: ${props => (props.show ? 'all' : 'none')};
+  pointer-events: ${(props: OverlayProps) => (props.$show ? 'all' : 'none')};
   transition: all 0.25s;
   top: 0px;
   width: 100%;
