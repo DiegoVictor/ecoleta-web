@@ -8,9 +8,7 @@ const Home: React.FC = () => {
   return (
     <Container>
       <div>
-        <header>
-          <img src={Logo} alt="Ecoleta" />
-        </header>
+        <header>{Logo && <img src={Logo} alt="Ecoleta" />}</header>
 
         <Main>
           <h1>Seu marketplace de coleta de resíduos.</h1>
