@@ -2,7 +2,7 @@ import React from 'react';
 import { render, fireEvent, act } from '@testing-library/react';
 import faker from '@faker-js/faker';
 
-import DropZone from '../../src/components/Dropzone';
+import { Dropzone } from '../../src/components/Dropzone';
 
 interface DataTransfer {
   dataTransfer: {

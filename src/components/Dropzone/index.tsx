@@ -8,7 +8,7 @@ interface DropzoneProps {
   onFileSelected: (file: File) => void;
 }
 
-const Dropzone: React.FC<DropzoneProps> = ({ onFileSelected }) => {
+export const Dropzone: React.FC<DropzoneProps> = ({ onFileSelected }) => {
   const [selectedFileUrl, setSelectedFileUrl] = useState('');
 
   const onDrop = (acceptedFiles: File[]) => {
@@ -37,5 +37,3 @@ const Dropzone: React.FC<DropzoneProps> = ({ onFileSelected }) => {
     </Container>
   );
 };
-
-export default Dropzone;

@@ -6,7 +6,7 @@ import faker from '@faker-js/faker';
 import MockAdapter from 'axios-mock-adapter';
 import { toast } from 'react-toastify';
 
-import Register from '../../src/pages/Register';
+import { Register } from '../../src/pages/Register';
 import ibge from '../../src/services/ibge';
 import api from '../../src/services/api';
 

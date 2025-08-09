@@ -4,7 +4,7 @@ import { FiLogIn } from 'react-icons/fi';
 import Logo from '../../assets/logo.svg';
 import { Container, Main, Link } from './styles';
 
-const Home: React.FC = () => {
+export const Home: React.FC = () => {
   return (
     <Container>
       <div>
@@ -27,5 +27,3 @@ const Home: React.FC = () => {
     </Container>
   );
 };
-
-export default Home;

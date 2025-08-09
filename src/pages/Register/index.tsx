@@ -20,7 +20,7 @@ import api from '../../services/api';
 import ibge from '../../services/ibge';
 import Check from '../../assets/check.svg';
 import Logo from '../../assets/logo.svg';
-import Dropzone from '../../components/Dropzone';
+import { Dropzone } from '../../components/Dropzone';
 import { Input } from '../../components/Input';
 import { Select } from '../../components/Select';
 import {
@@ -57,7 +57,7 @@ const MapCenterOnClick = () => {
   return null;
 };
 
-const Register: React.FC = () => {
+export const Register: React.FC = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
@@ -363,5 +363,3 @@ const Register: React.FC = () => {
     </>
   );
 };
-
-export default Register;
