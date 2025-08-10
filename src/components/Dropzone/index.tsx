@@ -4,7 +4,7 @@ import { FiUpload } from 'react-icons/fi';
 
 import { Container } from './styles';
 
-interface DropzoneProps {
+export interface DropzoneProps {
   onFileSelected: (file: File) => void;
 }
 
