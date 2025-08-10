@@ -358,7 +358,7 @@ export const Register: React.FC = () => {
           </button>
         </Form>
       </Container>
-      <Overlay data-testid="overlay" show={showOverlay}>
+      <Overlay data-testid="overlay" $show={showOverlay}>
         <img src={Check} alt="Success" />
         <span>Cadastro concluído!</span>
       </Overlay>
