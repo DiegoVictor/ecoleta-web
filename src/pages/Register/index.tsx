@@ -135,7 +135,9 @@ export const Register: React.FC = () => {
         city: Yup.string().required('A cidade é obrigatória'),
         latitude: Yup.number().notOneOf([0]).required(),
         longitude: Yup.number().notOneOf([0]).required(),
-        items: Yup.array().required('Escolha pelo menos uma categoria'),
+        items: Yup.array()
+          .min(1, 'Escolha pelo menos uma categoria')
+          .required(),
         image: Yup.mixed().required(
           'Escolha uma imagem para o estabelecimento',
         ),
