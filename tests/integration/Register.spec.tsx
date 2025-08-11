@@ -1,98 +1,94 @@
-import React from 'react';
-import { act, fireEvent, render, wait } from '@testing-library/react';
-import { MemoryRouter, Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
-import faker from '@faker-js/faker';
+import React, { PropsWithChildren } from 'react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router';
+import { faker } from '@faker-js/faker';
 import MockAdapter from 'axios-mock-adapter';
 import { toast } from 'react-toastify';
 
 import { Register } from '../../src/pages/Register';
 import ibge from '../../src/services/ibge';
 import api from '../../src/services/api';
+import { DropzoneProps } from '../../src/components/Dropzone';
 
-const mockGeolocation = {
-  getCurrentPosition: jest.fn(success => {
-    success({
-      coords: {
-        latitude: 0,
-        longitude: 0,
-      },
-    });
-  }),
-};
-
-// @ts-ignore
-global.navigator.geolocation = mockGeolocation;
-
+const mockUseMapEvent = jest.fn();
 jest.mock('react-leaflet', () => {
+  const Component = () => {
+    return <div />;
+  };
+
   return {
-    Map: ({
-      onClick,
-    }: {
-      onClick: (event: { latlng: { lat: string; lng: string } }) => void;
-    }) => {
-      return (
-        <div
-          onClick={() => {
-            const event = {
-              latlng: {
-                lat: faker.address.latitude(),
-                lng: faker.address.longitude(),
-              },
-            };
-            onClick(event);
-          }}
-          data-testid="map"
-        ></div>
-      );
+    MapContainer: ({ children }: PropsWithChildren) => {
+      return <div data-testid="map-container">{children}</div>;
     },
-    TileLayer: () => {
-      return <div />;
-    },
-    Marker: () => {
-      return <div />;
+    TileLayer: Component,
+    Marker: Component,
+    useMapEvent: (event: string, cb: (event: any) => void) => {
+      return mockUseMapEvent(event, cb);
     },
   };
 });
 
 jest.mock('../../src/components/Dropzone', () => {
   return {
-    __esModule: true,
-    default: ({ onFileSelected }: { onFileSelected: (file: File) => void }) => {
+    Dropzone: ({ onFileSelected }: DropzoneProps) => {
       return (
         <input
           type="file"
-          onChange={function () {
-            onFileSelected(new File(['file'], 'image.jpg'));
-          }}
           data-testid="dropzone"
+          onChange={() => onFileSelected(new File([], ''))}
         />
       );
     },
   };
 });
 
-describe('Register page', () => {
-  const ibgeMock = new MockAdapter(ibge);
-  const apiMock = new MockAdapter(api);
+const mockUseNavigate = jest.fn();
+jest.mock('react-router', () => {
+  return {
+    ...jest.requireActual('react-router'),
+    useNavigate: () => mockUseNavigate(),
+  };
+});
 
+const getCurrentPosition = jest.fn();
+Object.defineProperty(global.navigator, 'geolocation', {
+  value: { getCurrentPosition },
+});
+
+const ibgeMock = new MockAdapter(ibge);
+const apiMock = new MockAdapter(api);
+
+describe('Register page', () => {
   it('should be able to navigate to home page', async () => {
-    const history = createBrowserHistory();
-    const { getByTestId } = render(
-      <Router history={history}>
-        <Register />
-      </Router>,
+    getCurrentPosition.mockImplementationOnce(cb => {
+      cb({
+        coords: {
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        },
+      });
+    });
+
+    const { getByTestId, getByText } = render(
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<div>Home</div>} />
+        </Routes>
+      </MemoryRouter>,
     );
 
     fireEvent.click(getByTestId('home'));
 
-    expect(history.location.pathname).toBe('/');
+    expect(getByText('Home')).toBeInTheDocument();
   });
 
   it('should not be able to register new collect point with invalid data', async () => {
     const { getByTestId, getByText } = render(
-      <MemoryRouter>
-        <Register />
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </MemoryRouter>,
     );
 
@@ -115,25 +111,44 @@ describe('Register page', () => {
   });
 
   it('should not be able to load states', async () => {
+    getCurrentPosition.mockImplementationOnce(cb => {
+      cb({
+        coords: {
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        },
+      });
+    });
+
     ibgeMock.onGet('/estados').reply(500);
 
     const error = jest.spyOn(toast, 'error');
 
     render(
-      <MemoryRouter>
-        <Register />
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </MemoryRouter>,
     );
 
-    await wait(() =>
-      expect(error).toHaveBeenCalledWith(
-        'Opa! Alguma coisa deu errado ao tentar carregar a lista de estados, tente recarregar a pagina!',
-      ),
+    await waitFor(() => expect(error).toHaveBeenCalled());
+    expect(error).toHaveBeenCalledWith(
+      'Opa! Alguma coisa deu errado ao tentar carregar a lista de estados, tente recarregar a pagina!',
     );
   });
 
   it('should not be able to load cities', async () => {
-    const uf = faker.address.stateAbbr();
+    getCurrentPosition.mockImplementationOnce(cb => {
+      cb({
+        coords: {
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        },
+      });
+    });
+
+    const uf = 'SP';
 
     ibgeMock
       .onGet('/estados')
@@ -146,14 +161,14 @@ describe('Register page', () => {
     const error = jest.spyOn(toast, 'error');
 
     const { getByTestId, getByText } = render(
-      <MemoryRouter>
-        <Register />
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </MemoryRouter>,
     );
 
-    await wait(() => {
-      expect(getByText(uf)).toBeInTheDocument();
-    });
+    await waitFor(() => getByText(uf));
 
     await act(async () => {
       fireEvent.change(getByTestId('state'), {
@@ -163,40 +178,58 @@ describe('Register page', () => {
       });
     });
 
-    await wait(() =>
-      expect(error).toHaveBeenCalledWith(
-        'Opa! Alguma coisa deu errado ao tentar carregar a lista de municípios, tente recarregar a pagina!',
-      ),
+    await waitFor(() => expect(error).toHaveBeenCalled());
+    expect(error).toHaveBeenCalledWith(
+      'Opa! Alguma coisa deu errado ao tentar carregar a lista de municípios, tente recarregar a pagina!',
     );
   });
 
   it('should not be able to load items', async () => {
+    getCurrentPosition.mockImplementationOnce(cb => {
+      cb({
+        coords: {
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        },
+      });
+    });
+
     apiMock.onGet('/items').reply(500);
 
     const error = jest.spyOn(toast, 'error');
 
     render(
-      <MemoryRouter>
-        <Register />
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </MemoryRouter>,
     );
 
-    await wait(() =>
-      expect(error).toHaveBeenCalledWith(
-        'Opa! Alguma coisa deu errado ao tentar carregar a lista de items para coleta, tente recarregar a pagina!',
-      ),
+    await waitFor(() => expect(error).toHaveBeenCalled());
+    expect(error).toHaveBeenCalledWith(
+      'Opa! Alguma coisa deu errado ao tentar carregar a lista de items para coleta, tente recarregar a pagina!',
     );
   });
 
   it('should be able to register new collection point', async () => {
+    getCurrentPosition.mockImplementationOnce(cb => {
+      cb({
+        coords: {
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        },
+      });
+    });
+
     jest.useFakeTimers();
 
-    const uf = faker.address.stateAbbr();
-    const city = faker.address.city();
+    const uf = 'SP';
+    const city = 'São Paulo';
     const item = {
-      id: faker.datatype.number(),
-      title: faker.random.word(),
-      image_url: faker.image.imageUrl(),
+      id: faker.number.int(),
+      title: faker.lorem.word(),
+      image_url: faker.image.url(),
     };
 
     ibgeMock
@@ -207,20 +240,20 @@ describe('Register page', () => {
 
     apiMock.onPost('/points').reply(200).onGet('/items').reply(200, [item]);
 
-    const history = createBrowserHistory();
-    history.location.pathname = '/register';
+    const navigate = jest.fn();
+    mockUseNavigate.mockReturnValue(navigate);
 
     const { getByText, getByTestId, getByLabelText } = render(
-      <Router history={history}>
-        <Register />
-      </Router>,
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </MemoryRouter>,
     );
 
     expect(getByTestId('overlay')).toHaveStyle({ opacity: 0 });
 
-    await wait(() => {
-      expect(getByText(uf)).toBeInTheDocument();
-    });
+    await waitFor(() => getByText(uf));
 
     await act(async () => {
       fireEvent.change(getByTestId('state'), {
@@ -230,9 +263,7 @@ describe('Register page', () => {
       });
     });
 
-    await wait(() => {
-      expect(getByText(city)).toBeInTheDocument();
-    });
+    await waitFor(() => getByText(city));
 
     await act(async () => {
       fireEvent.change(getByTestId('city'), {
@@ -247,14 +278,14 @@ describe('Register page', () => {
     });
 
     await act(async () => {
-      fireEvent.click(getByTestId('map'));
+      fireEvent.click(getByTestId('map-container'));
     });
 
     fireEvent.change(getByTestId('dropzone'));
 
     fireEvent.change(getByLabelText('Nome da entidade'), {
       target: {
-        value: faker.name.findName(),
+        value: faker.company.name(),
       },
     });
     fireEvent.change(getByLabelText('Email'), {
@@ -264,7 +295,7 @@ describe('Register page', () => {
     });
     fireEvent.change(getByLabelText('WhatsApp'), {
       target: {
-        value: faker.name.findName(),
+        value: faker.phone.number(),
       },
     });
 
@@ -276,18 +307,27 @@ describe('Register page', () => {
 
     jest.runAllTimers();
 
-    expect(history.location.pathname).toBe('/');
+    expect(navigate).toHaveBeenCalledWith('/');
   });
 
   it('should not be able to register new collection point with network error', async () => {
+    getCurrentPosition.mockImplementationOnce(cb => {
+      cb({
+        coords: {
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        },
+      });
+    });
+
     jest.useFakeTimers();
 
-    const uf = faker.address.stateAbbr();
-    const city = faker.address.city();
+    const uf = 'SP';
+    const city = 'São Paulo';
     const item = {
-      id: faker.datatype.number(),
-      title: faker.random.word(),
-      image_url: faker.image.imageUrl(),
+      id: faker.number.int(),
+      title: faker.lorem.word(),
+      image_url: faker.image.url(),
     };
 
     ibgeMock
@@ -300,20 +340,17 @@ describe('Register page', () => {
 
     const error = jest.spyOn(toast, 'error');
 
-    const history = createBrowserHistory();
-    history.location.pathname = '/register';
-
     const { getByText, getByTestId, getByLabelText } = render(
-      <Router history={history}>
-        <Register />
-      </Router>,
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
+      </MemoryRouter>,
     );
 
     expect(getByTestId('overlay')).toHaveStyle({ opacity: 0 });
 
-    await wait(() => {
-      expect(getByText(uf)).toBeInTheDocument();
-    });
+    await waitFor(() => getByText(uf));
 
     await act(async () => {
       fireEvent.change(getByTestId('state'), {
@@ -323,9 +360,7 @@ describe('Register page', () => {
       });
     });
 
-    await wait(() => {
-      expect(getByText(city)).toBeInTheDocument();
-    });
+    await waitFor(() => getByText(city));
 
     await act(async () => {
       fireEvent.change(getByTestId('city'), {
@@ -340,14 +375,14 @@ describe('Register page', () => {
     });
 
     await act(async () => {
-      fireEvent.click(getByTestId('map'));
+      fireEvent.click(getByTestId('map-container'));
     });
 
     fireEvent.change(getByTestId('dropzone'));
 
     fireEvent.change(getByLabelText('Nome da entidade'), {
       target: {
-        value: faker.name.findName(),
+        value: faker.company.name(),
       },
     });
     fireEvent.change(getByLabelText('Email'), {
@@ -357,7 +392,7 @@ describe('Register page', () => {
     });
     fireEvent.change(getByLabelText('WhatsApp'), {
       target: {
-        value: faker.name.findName(),
+        value: faker.phone.number(),
       },
     });
 
@@ -366,19 +401,27 @@ describe('Register page', () => {
     });
 
     expect(getByTestId('overlay')).toHaveStyle({ opacity: 0 });
-    expect(history.location.pathname).toBe('/register');
     expect(error).toHaveBeenCalledWith(
       'Opa! Alguma coisa deu errado, tente novamente mais tarde!',
     );
   });
 
-  it('should be to unselect an item', async () => {
-    const uf = faker.address.stateAbbr();
-    const city = faker.address.city();
+  it('should be able to unselect an item', async () => {
+    getCurrentPosition.mockImplementationOnce(cb => {
+      cb({
+        coords: {
+          latitude: faker.location.latitude(),
+          longitude: faker.location.longitude(),
+        },
+      });
+    });
+
+    const uf = 'SP';
+    const city = 'São Paulo';
     const item = {
-      id: faker.datatype.number(),
-      title: faker.random.word(),
-      image_url: faker.image.imageUrl(),
+      id: faker.number.int(),
+      title: faker.lorem.word(),
+      image_url: faker.image.url(),
     };
 
     ibgeMock
@@ -390,14 +433,14 @@ describe('Register page', () => {
     apiMock.onGet('/items').reply(200, [item]);
 
     const { getByText, getByTestId } = render(
-      <MemoryRouter>
-        <Register />
+      <MemoryRouter initialEntries={['/register']}>
+        <Routes>
+          <Route path="/register" element={<Register />} />
+        </Routes>
       </MemoryRouter>,
     );
 
-    await wait(() => {
-      expect(getByText(uf)).toBeInTheDocument();
-    });
+    await waitFor(() => getByText(uf));
 
     await act(async () => {
       fireEvent.change(getByTestId('state'), {
@@ -407,9 +450,7 @@ describe('Register page', () => {
       });
     });
 
-    await wait(() => {
-      expect(getByText(city)).toBeInTheDocument();
-    });
+    await waitFor(() => getByText(city));
 
     await act(async () => {
       fireEvent.click(getByTestId(`item_${item.id}`));

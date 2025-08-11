@@ -195,6 +195,7 @@ export const Register: React.FC = () => {
     (async () => {
       try {
         const { data } = await api.get('/items');
+
         setItems(data);
       } catch (err) {
         toast.error(
