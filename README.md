@@ -1,9 +1,9 @@
 # [Web] Ecoleta
 [![CircleCI](https://img.shields.io/circleci/build/github/DiegoVictor/ecoleta-web?style=flat-square&logo=circleci)](https://app.circleci.com/pipelines/github/DiegoVictor/ecoleta-web?branch=main)
 [![typescript](https://img.shields.io/badge/typescript-5.9.2-3178c6?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![reactjs](https://img.shields.io/badge/reactjs-16.13.1-61dafb?style=flat-square&logo=react)](https://reactjs.org/)
+[![reactjs](https://img.shields.io/badge/reactjs-19.1.1-61dafb?style=flat-square&logo=react)](https://reactjs.org/)
 [![styled-components](https://img.shields.io/badge/styled_components-6.1.9-db7b86?style=flat-square&logo=styled-components)](https://styled-components.com/)
-[![eslint](https://img.shields.io/badge/eslint-9.32.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
+[![eslint](https://img.shields.io/badge/eslint-9.33.0-4b32c3?style=flat-square&logo=eslint)](https://eslint.org/)
 [![jest](https://img.shields.io/badge/jest-30.0.5-brightgreen?style=flat-square&logo=jest)](https://jestjs.io/)
 [![coverage](https://img.shields.io/codecov/c/gh/DiegoVictor/ecoleta-web?logo=codecov&style=flat-square)](https://codecov.io/gh/DiegoVictor/ecoleta-web)
 [![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](https://raw.githubusercontent.com/DiegoVictor/ecoleta-web/main/LICENSE)
