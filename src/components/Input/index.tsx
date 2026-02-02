@@ -5,6 +5,7 @@ interface InputProps {
   id?: string;
   type?: string;
   error?: string;
+  placeholder?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
