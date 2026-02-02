@@ -6,11 +6,29 @@ import MockAdapter from 'axios-mock-adapter';
 import { toast } from 'react-toastify';
 
 import { Register } from '../../src/pages/Register';
+import { DropzoneProps } from '../../src/components/Dropzone';
 import ibge from '../../src/services/ibge';
 import api from '../../src/services/api';
-import { DropzoneProps } from '../../src/components/Dropzone';
 
-const mockUseMapEvent = jest.fn();
+const events: Record<string, Function> = {};
+const mockUseMapEvent = jest.fn((event, cb) => {
+  events[event] = cb;
+  return {
+    setView: jest.fn(),
+  };
+});
+
+const mockCallback = jest.fn(() => {
+  if (events.click) {
+    events.click({
+      latlng: {
+        lat: faker.location.latitude(),
+        lng: faker.location.longitude(),
+      },
+    });
+  }
+});
+
 jest.mock('react-leaflet', () => {
   const Component = () => {
     return <div />;
@@ -18,7 +36,11 @@ jest.mock('react-leaflet', () => {
 
   return {
     MapContainer: ({ children }: PropsWithChildren) => {
-      return <div data-testid="map-container">{children}</div>;
+      return (
+        <div data-testid="map-container" onClick={() => mockCallback()}>
+          {children}
+        </div>
+      );
     },
     TileLayer: Component,
     Marker: Component,
